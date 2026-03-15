@@ -1,75 +1,90 @@
 {
-  "timestamp": "2026-03-15T00:31:08.138332",
-  "success": false,
-  "errors": [
-    "PowerShell discovery unavailable (non-Windows system)"
-  ],
+  "timestamp": "2026-03-15T00:33:26.513462",
+  "success": true,
+  "errors": [],
   "system": {
-    "os_name": "linux",
-    "os_version": "",
-    "os_build": "",
-    "architecture": "",
-    "computer_name": "",
-    "username": "",
-    "domain": "",
-    "processor_count": 0,
-    "processor_name": "",
-    "total_physical_memory_gb": 0.0
+    "os_name": "Microsoft Windows 11 Pro",
+    "os_version": "10.0.22631",
+    "os_build": "22631",
+    "architecture": "64-bit",
+    "computer_name": "TEST-COMPUTER",
+    "username": "testuser",
+    "domain": "TESTDOMAIN",
+    "processor_count": 8,
+    "processor_name": "Intel(R) Core(TM) i7-1234K CPU @ 0.00GHz",
+    "total_physical_memory_gb": 32.0
   },
   "virtualization": {
-    "hyper_v_available": false,
-    "wsl_installed": false,
-    "wsl_version": "",
-    "wsl_distros": [],
-    "windows_sandbox_available": false,
-    "dev_drives": []
+    "hyper_v_available": true,
+    "wsl_installed": true,
+    "wsl_version": "WSL 2",
+    "wsl_distros": [
+      "Ubuntu-22.04",
+      "Debian"
+    ],
+    "windows_sandbox_available": true,
+    "dev_drives": [
+      {
+        "drive_letter": "D",
+        "label": "DevDrive",
+        "size_gb": 500.0,
+        "free_space_gb": 400.0
+      }
+    ]
   },
   "development_tools": {
-    "winget_available": false,
-    "chocolatey_available": false,
-    "scoop_available": false,
-    "git_available": false,
-    "docker_available": false,
-    "vscode_available": false,
-    "visual_studio_available": false
+    "winget_available": true,
+    "chocolatey_available": true,
+    "scoop_available": true,
+    "git_available": true,
+    "docker_available": true,
+    "vscode_available": true,
+    "visual_studio_available": true
   },
   "runtimes": {
     "python": {
-      "available": false,
-      "version": null
+      "available": true,
+      "version": "3.11.0"
     },
     "node": {
-      "available": false,
-      "version": null
+      "available": true,
+      "version": "20.5.0"
     },
     "rust": {
-      "available": false,
-      "version": null
+      "available": true,
+      "version": "1.71.0"
     },
     "golang": {
-      "available": false,
-      "version": null
+      "available": true,
+      "version": "1.21.0"
     },
     "dotnet": {
-      "available": false,
-      "versions": []
+      "available": true,
+      "versions": [
+        "7.0.0",
+        "8.0.0"
+      ]
     }
   },
   "git": {
-    "available": false,
-    "version": null,
-    "user_name": null,
-    "user_email": null
+    "available": true,
+    "version": "2.42.0",
+    "user_name": "Test User",
+    "user_email": "test@example.com"
   },
   "editors": {
-    "visual_studio_code": false,
-    "visual_studio": false,
+    "visual_studio_code": true,
+    "visual_studio": true,
     "jetbrains_rider": false,
-    "jetbrains_pycharm": false,
+    "jetbrains_pycharm": true,
     "jetbrains_clion": false
   },
   "powershell_modules": {
-    "count": 0,
-    "modules": []
+    "count": 42,
+    "modules": [
+      "Az.Accounts",
+      "Az.Compute",
+      "Pester"
+    ]
   }
 }
