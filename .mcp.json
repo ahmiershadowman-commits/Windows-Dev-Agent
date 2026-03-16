@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "windows-dev-agent": {
+      "command": "python",
+      "args": ["-m", "src.mcp.server"],
+      "env": {},
+      "description": "Windows-native agent orchestration server. Exposes environment inspection, capability routing, workflow planning, sandbox execution, and package management via PowerShell and WinGet."
+    }
+  }
+}
