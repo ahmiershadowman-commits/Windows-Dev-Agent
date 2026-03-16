@@ -89,7 +89,7 @@ src/config/capability_loader.py← YAML parser + validator
 - `src/observability/trace.py` — per-tool-call trace emitter (invoked by PostToolUse hook)
 - `src/observability/audit_report.py` — session-end audit report (invoked by Stop hook)
   - `telemetry.py` is NOT deleted — tests import `Telemetry`, `Span`, `Meter`, `get_telemetry` from it directly. The zip files are additions.
-- `src/mcp/server.py` — **replace** current version with zip's 16KB stdio MCP server. The current `server.py` is a plain Python class with no stdio transport. The zip version is a proper JSON-RPC stdio server. Launch command: `python -m src.mcp.server` (matches `.mcp.json` declaration).
+- `src/mcp/server.py` — **replace** current version with zip's 16KB stdio MCP server. The current `server.py` is a plain Python class with no stdio transport. The zip version is a proper JSON-RPC stdio server. Launch command: `python -m src.mcp.server` (matches `.mcp.json` declaration). No tests import from `src.mcp` — replacement is safe.
 - `README.md` — **replace**: rewrite to describe the plugin, not the prototype CLI
 
 ### Keep (current repo — more complete implementations)
@@ -141,7 +141,7 @@ After wire-up, all of the following must pass:
 5. `/windows-dev-agent:defrag` runs the scan phase and presents an inventory
 6. `/windows-dev-agent:plan <task>` generates a structured plan before touching anything
 7. Hooks fire on Bash tool calls and classify safety level
-8. `apm.yml` validates against the APM manifest schema: must contain `name`, `version`, `description`, and `targets` fields (ref: github.com/microsoft/apm for schema)
+8. `apm.yml` is valid YAML containing at minimum: `name`, `version`, `description`, and `targets` fields. These four fields are the authoritative definition for this project; external schema validation is deferred.
 
 ---
 
