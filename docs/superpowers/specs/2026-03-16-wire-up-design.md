@@ -83,14 +83,16 @@ src/config/capability_loader.py← YAML parser + validator
 - `skills/sandbox-run/SKILL.md`
 - `hooks/hooks.json`
 
-### Replace with zip versions (zip is cleaner/more complete)
+### Add from zip (backend files — additive, do not replace existing)
 
-- `src/safety/gate.py` — zip has real regex-based classifier; current has only `policy.py` stub
-- `src/observability/` — replace `telemetry.py` with zip's `trace.py` + `audit_report.py`
-- `src/mcp/server.py` — zip version is 16KB with full tool definitions; current is smaller
-- `README.md` — rewrite to describe the plugin, not the prototype CLI
+- `src/safety/gate.py` — regex-based CLI classifier invoked by hooks. Lives alongside `policy.py` (kept separately for tests — see below). `policy.py` is NOT deleted.
+- `src/observability/trace.py` — per-tool-call trace emitter (invoked by PostToolUse hook)
+- `src/observability/audit_report.py` — session-end audit report (invoked by Stop hook)
+  - `telemetry.py` is NOT deleted — tests import `Telemetry`, `Span`, `Meter`, `get_telemetry` from it directly. The zip files are additions.
+- `src/mcp/server.py` — **replace** current version with zip's 16KB stdio MCP server. The current `server.py` is a plain Python class with no stdio transport. The zip version is a proper JSON-RPC stdio server. Launch command: `python -m src.mcp.server` (matches `.mcp.json` declaration).
+- `README.md` — **replace**: rewrite to describe the plugin, not the prototype CLI
 
-### Keep (current repo has more complete implementations)
+### Keep (current repo — more complete implementations)
 
 - `src/discovery/` — full WMI/PowerShell discovery with caching
 - `src/execution/` — command builder + PowerShell executor with escaping
@@ -99,8 +101,18 @@ src/config/capability_loader.py← YAML parser + validator
 - `src/graph/capability_graph.py` — tool selection + routing
 - `src/schemas/{capability,tool,workflow}.py` — rich schema with intent classes, safety levels
 - `src/config/capability_loader.py` — YAML parser with backward compatibility
+- `src/safety/policy.py` — kept as-is; tests import `SafetyPolicy` from it
+- `src/observability/telemetry.py` — kept as-is; tests import `Telemetry`/`Span`/`Meter`/`get_telemetry` from it
 - `capabilities.yaml` — current version is more complete
 - `tests/` — all 112 tests kept
+
+### Keep (stubs — deferred to expand phase)
+
+- `src/adapters/__init__.py`
+- `src/audit/__init__.py`
+- `src/cli/__init__.py`
+- `src/reporting/__init__.py`
+- `src/importers/__init__.py` — implementation deferred (powers defrag scan phase)
 
 ### Add new
 
@@ -122,13 +134,14 @@ No changes to the safety model in this phase.
 
 After wire-up, all of the following must pass:
 
-1. `claude --plugin-dir .` loads the plugin without errors
-2. `/windows-dev-agent:env` invokes the `env_inspect` MCP tool and returns environment data
-3. `/windows-dev-agent:defrag` runs the scan phase and presents an inventory
-4. `/windows-dev-agent:plan <task>` generates a structured plan before touching anything
-5. Hooks fire on Bash tool calls and classify safety level
-6. `python -m pytest tests/ -q` — all 112 tests still pass
-7. `apm.yml` is valid YAML and declares the correct plugin metadata
+1. `python -m pytest tests/ -q` — all 112 tests still pass (run this first, before any Claude Code testing)
+2. `python -m src.mcp.server` — server starts and responds to a `tools/list` JSON-RPC probe without error (standalone pre-flight, no Claude Code required)
+3. `claude --plugin-dir .` loads the plugin without errors
+4. `/windows-dev-agent:env` invokes the `env_inspect` MCP tool and returns environment data
+5. `/windows-dev-agent:defrag` runs the scan phase and presents an inventory
+6. `/windows-dev-agent:plan <task>` generates a structured plan before touching anything
+7. Hooks fire on Bash tool calls and classify safety level
+8. `apm.yml` validates against the APM manifest schema: must contain `name`, `version`, `description`, and `targets` fields (ref: github.com/microsoft/apm for schema)
 
 ---
 
