@@ -1,0 +1,18 @@
+name: windows-dev-agent
+version: 0.2.0
+description: Windows-native agent orchestration plugin. PowerShell-first execution, WinGet package management, environment discovery, safety-gated workflow synthesis, and sandbox routing.
+targets:
+  - claude
+  - codex
+  - opencode
+homepage: https://github.com/ahmiershadowman-commits/Windows-Dev-Agent
+license: MIT
+keywords:
+  - windows
+  - powershell
+  - winget
+  - wsl
+  - hyper-v
+  - sandbox
+  - orchestration
+  - defrag
